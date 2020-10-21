@@ -85,12 +85,12 @@ def createTree(dataSet, labels):
 
 def print_tree(mytree, level=0):
     if not hasattr(mytree, 'keys'):
-        print "%s%s" % ('-' * level, mytree)
+        print("%s%s" % ('-' * level, mytree))
         return
 
     keys = mytree.keys()
     for k in keys:
-        print "%s%s" % ('-' * level,k)
+        print("%s%s" % ('-' * level,k))
         print_tree(mytree[k], level + 1)
 
 
@@ -107,7 +107,7 @@ def csv_dict_reader(file_obj):
                 labels.append(g)
 
     file_obj.seek(0)
-    reader.next()
+    #reader.next()
 
     for col in reader:
         vec = []
@@ -123,12 +123,12 @@ def csv_dict_reader(file_obj):
     return dataset, labels
 
 def print_table(dataset, lables):
-    print labels
+    print(labels)
     for i in dataset:
-        print i
+        print(i)
 
 def classify(inputTree, featLabels, testVec):
-    firstStr = inputTree.keys()[0]
+    firstStr = list(inputTree.keys())[0]
     secondDict = inputTree[firstStr]
     featIndex = featLabels.index(firstStr)
 
@@ -146,22 +146,22 @@ def classify(inputTree, featLabels, testVec):
 
 
 # Arrange data
-f_obj = open("movies.csv")
+f_obj = open("movies.csv", encoding="utf-8")
 dataset, labels = csv_dict_reader(f_obj)
 
 # Split into training/test
 # Give user decide which movie he likes
 
 dataTraining = []
-print "For each movie please enter L if you like, N if you don't like\n and D if you don't know this movie\n"
+print("For each movie please enter L if you like, N if you don't like\n and D if you don't know this movie\n")
 for i in range(0,20):
     answer = 'D'
     removedVec = []
     while answer == 'D':
         t = random.randint(0, len(dataset) - 1)
         removedVec = dataset[t]
-        print "\"%s\" | L/N/D" % removedVec[0]
-        answer = raw_input().upper()
+        print("\"%s\" | L/N/D" % removedVec[0])
+        answer = input().upper()
     removedVec.append(answer)
     removedVec.remove(removedVec[0])
     dataTraining.append(removedVec)
@@ -174,8 +174,8 @@ labelsForModel.remove(labelsForModel[0])
 movietree =createTree(dataTraining, labelsForModel)
 
 # Run model on test data
-print "movies you will like: "
+print("movies you will like: ")
 for vec in dataset:
     cl = classify(movietree, labels, vec)
     if cl == 'L':
-        print vec[0]
+        print(vec[0])
